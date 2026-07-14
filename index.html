@@ -83,6 +83,21 @@
     font-weight:400;
   }
   nav.main-nav a:hover{color:#fff;background:rgba(143,184,224,.1);}
+  .nav-item{position:relative;}
+  .nav-item.has-dropdown{display:flex;align-items:center;}
+  .dropdown-menu{
+    position:absolute;top:100%;left:0;min-width:200px;
+    background:var(--navy-2);border:1px solid rgba(143,184,224,.18);
+    padding:6px;display:none;flex-direction:column;gap:2px;
+    box-shadow:0 12px 24px rgba(0,0,0,.35);z-index:50;
+  }
+  .nav-item.has-dropdown:hover .dropdown-menu,
+  .nav-item.has-dropdown:focus-within .dropdown-menu{display:flex;}
+  .dropdown-menu a{
+    padding:10px 14px;font-size:13.5px;color:#C7D4E4;
+    border-radius:var(--radius);white-space:nowrap;
+  }
+  .dropdown-menu a:hover{color:#fff;background:rgba(143,184,224,.12);}
   .nav-cta{
     border:1px solid var(--amber);color:var(--amber) !important;
     font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.03em;
@@ -97,9 +112,12 @@
     padding:88px 28px 64px;
     background-image:
       linear-gradient(var(--line-soft) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
-    background-size:44px 44px;
-    background-position:center top;
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px),
+      linear-gradient(rgba(10,22,40,.90), rgba(10,22,40,.93)),
+      url('https://www.moveupcloud.com/wp-content/uploads/2018/05/moveupcloud_datacenter-servers-2.jpg');
+    background-size:44px 44px, 44px 44px, cover, cover;
+    background-position:center top, center top, center, center;
+    background-repeat:repeat, repeat, no-repeat, no-repeat;
   }
   .hero::before{
     content:"";position:absolute;inset:0;
@@ -233,6 +251,22 @@
   .spec-list li::before{
     content:"";position:absolute;left:0;top:8px;width:7px;height:1px;background:var(--line);
   }
+  .tier-table-wrap{overflow-x:auto;margin-top:20px;border:1px solid #cfd9e0;}
+  .tier-table{width:100%;min-width:600px;border-collapse:collapse;font-size:12px;}
+  .tier-table th,.tier-table td{
+    padding:9px 10px;text-align:center;border-bottom:1px solid #e2e8ed;border-right:1px solid #e2e8ed;
+  }
+  .tier-table th:last-child,.tier-table td:last-child{border-right:none;}
+  .tier-table thead th{
+    background:var(--navy-2);color:#EAF0F7;font-family:'IBM Plex Mono',monospace;
+    font-weight:500;letter-spacing:.02em;
+  }
+  .tier-table tbody th{
+    text-align:left;font-family:'IBM Plex Mono',monospace;color:var(--slate);
+    background:var(--paper-2);white-space:nowrap;font-weight:500;
+  }
+  .tier-table tbody td{color:var(--text);}
+  .tier-table tbody tr:nth-child(even) td{background:#fafbfc;}
 
   /* ---------- PROCESS ---------- */
   .process{background:var(--paper-2);padding:96px 28px;}
@@ -258,8 +292,24 @@
   /* ---------- ABOUT ---------- */
   .about-section{max-width:1240px;margin:0 auto;padding:96px 28px;
     display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start;}
+  .about-side{display:flex;flex-direction:column;gap:20px;}
+  .datacenter-photo{
+    width:100%;height:200px;object-fit:cover;filter:saturate(.85) contrast(1.05);
+    display:block;
+  }
   .about-copy p{color:var(--slate);font-size:15px;line-height:1.85;margin-bottom:16px;max-width:520px;}
   .about-copy p:first-of-type{color:var(--text);font-size:17px;line-height:1.7;font-weight:400;}
+  .cert-block{margin-top:8px;}
+  .cert-label{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--amber-dim);
+    letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;
+  }
+  .cert-badges{display:flex;flex-wrap:wrap;gap:8px;}
+  .cert-badge{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--text);
+    border:1px solid #cfd9e0;padding:7px 12px;border-radius:var(--radius);
+    background:var(--paper-2);
+  }
   .spec-sheet{
     background:var(--ink);border:1px solid rgba(143,184,224,.2);
     padding:8px 0;
@@ -283,6 +333,27 @@
   .clients .section-title,.clients .section-note{color:#EAF0F7;}
   .clients .section-note{color:#8FA6C4;}
   .clients .section-eyebrow{color:var(--amber);}
+  .logo-wall{
+    display:flex;flex-wrap:wrap;align-items:center;gap:28px;
+    margin-top:48px;padding:32px 0;border-top:1px solid rgba(143,184,224,.15);
+    border-bottom:1px solid rgba(143,184,224,.15);
+  }
+  .logo-item{
+    height:34px;max-width:130px;object-fit:contain;
+    filter:grayscale(100%) brightness(1.8) contrast(.9);opacity:.75;
+    transition:filter .2s, opacity .2s;
+    background:#fff;padding:6px 10px;border-radius:var(--radius);
+  }
+  .logo-item:hover{filter:none;opacity:1;}
+  .trusted-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:rgba(143,184,224,.18);margin-top:48px;margin-bottom:56px;
+  }
+  .trusted-item{
+    background:var(--navy-2);padding:20px 22px;
+    font-family:'IBM Plex Mono',monospace;font-size:13px;color:#C7D4E4;
+    letter-spacing:.01em;
+  }
   .case-grid{
     display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
     background:rgba(143,184,224,.18);margin-top:56px;
@@ -317,6 +388,7 @@
     display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;
     font-size:13px;font-weight:500;flex:none;
   }
+  .testi-avatar-img{object-fit:cover;}
   .testi-who div b{display:block;font-size:13.5px;font-weight:600;}
   .testi-who div span{font-size:12px;color:var(--slate);}
 
@@ -408,15 +480,23 @@
     }
     nav.main-nav.open{transform:translateX(0);}
     nav.main-nav a{padding:16px 8px;border-bottom:1px solid rgba(143,184,224,.12);border-radius:0;}
+    .nav-item.has-dropdown{flex-direction:column;align-items:stretch;}
+    .dropdown-menu{
+      position:static;display:flex;border:none;box-shadow:none;
+      background:rgba(143,184,224,.05);padding:0 0 0 16px;margin-bottom:4px;
+    }
+    .dropdown-menu a{padding:12px 8px;border-bottom:none;}
     .nav-toggle{display:block;}
     .stats-inner{grid-template-columns:1fr 1fr;}
     .module{grid-template-columns:1fr;gap:14px;}
     .spec-list{grid-template-columns:1fr;}
+    .tier-table-wrap{margin-top:16px;}
     .schematic{display:none;}
     .signal-path{grid-template-columns:1fr;gap:32px;}
     .signal-path::before{display:none;}
     .about-section{grid-template-columns:1fr;gap:40px;}
     .case-grid{grid-template-columns:1fr;}
+    .trusted-grid{grid-template-columns:1fr;}
     .testi-grid{grid-template-columns:1fr;}
     .contact-wrap{grid-template-columns:1fr;gap:40px;}
     .form-row{grid-template-columns:1fr;}
@@ -434,9 +514,18 @@
     </a>
     <nav class="main-nav" id="mainNav">
       <a href="#home">Home</a>
-      <a href="#services">ICT Solution</a>
-      <a href="#cloud">Cloud Service</a>
-      <a href="#about">About Us</a>
+      <div class="nav-item has-dropdown">
+        <a href="#cloud">Cloud VPS</a>
+        <div class="dropdown-menu">
+          <a href="#cloud">Cloud – VPS SSD</a>
+          <a href="#vps-business">Cloud – VPS Business</a>
+          <a href="#vps-forex">Cloud – VPS Forex</a>
+        </div>
+      </div>
+      <a href="#cloud">Dedicated</a>
+      <a href="#storage">Storage</a>
+      <a href="#dr-site">DR-Site</a>
+      <a href="#it-solution">IT Solution</a>
       <a href="#contact" class="nav-cta">Contact</a>
     </nav>
     <button class="nav-toggle" id="navToggle" aria-label="เมนู">☰</button>
@@ -445,13 +534,13 @@
 
 <section class="hero" id="home">
   <div class="hero-inner">
-    <div class="eyebrow">Since 2013 · IT Infrastructure Partner</div>
+    <div class="eyebrow">Since 2013 · IT Infrastructure + Cloud Partner</div>
     <h1 class="hero-title">
       <span class="th">โครงสร้างพื้นฐานไอที</span><br>
       <span class="th">ที่ธุรกิจคุณวางใจได้</span>
     </h1>
     <p class="hero-sub">
-      Ninety-One Consulting วางระบบ ดูแล และซัพพอร์ตโครงสร้างพื้นฐานไอทีแบบครบวงจร ตั้งแต่ Server, Network, Cloud ไปจนถึงแผนสำรองฉุกเฉิน — ให้ทีมงานเป็นคนดูแลเรื่องระบบ ส่วนคุณโฟกัสที่การเติบโตของธุรกิจ
+      Ninety-One Consulting วางระบบ ดูแล และซัพพอร์ตโครงสร้างพื้นฐานไอทีแบบครบวงจร ตั้งแต่ Server, Network, Cloud VPS, Dedicated Server, Cloud Storage ไปจนถึงแผนสำรองฉุกเฉิน — ให้ทีมงานเป็นคนดูแลเรื่องระบบ ส่วนคุณโฟกัสที่การเติบโตของธุรกิจ
     </p>
     <div class="hero-cta-row">
       <a href="#contact" class="btn btn-primary">นัดคุยกับทีมวิศวกร →</a>
@@ -506,9 +595,9 @@
 <div class="stats">
   <div class="stats-inner">
     <div class="stat"><b>10+</b><span>YEARS IN IT</span></div>
-    <div class="stat"><b>06</b><span>CORE SERVICES</span></div>
+    <div class="stat"><b>11</b><span>CORE SERVICES</span></div>
+    <div class="stat"><b>99.9%</b><span>DATA CENTER UPTIME</span></div>
     <div class="stat"><b>24/7</b><span>REMOTE SUPPORT</span></div>
-    <div class="stat"><b>BKK+</b><span>กรุงเทพฯ และต่างจังหวัด</span></div>
   </div>
 </div>
 
@@ -584,38 +673,186 @@
         <div class="led-row"><span class="led"></span><span class="led-text">ACTIVE</span></div>
       </div>
       <div class="module-body">
-        <h3><a href="#contact">Cloud VPS &amp; Dedicated Server</a></h3>
+        <h3><a href="#contact">Cloud VPS SSD &amp; Dedicated Server</a></h3>
         <div class="module-tagline">ยืดหยุ่น ปลอดภัย พร้อมรองรับการขยายตัวของธุรกิจ</div>
-        <p class="module-desc">โครงสร้าง Cloud ที่ปรับขนาดตามการใช้งานจริง พร้อมมาตรฐานความปลอดภัยของข้อมูล</p>
+        <p class="module-desc">โครงสร้าง Cloud และเซิร์ฟเวอร์กายภาพบน Data Center มาตรฐาน CS Loxinfo รับประกัน Uptime 99.9% ปรับขนาดได้ตามการใช้งานจริง</p>
         <ul class="spec-list">
-          <li>Cloud VPS ปรับขนาดทรัพยากรได้ตามการใช้งานจริง</li>
-          <li>Dedicated Server สำหรับงานหนักที่ต้องการประสิทธิภาพสูง</li>
-          <li>บริหารจัดการผ่าน Control Panel พร้อมสำรองข้อมูลรายวัน</li>
+          <li>Cloud VPS SSD บน DELL Server และ Samsung SSD ปรับขนาดทรัพยากรได้ตามใช้งานจริง</li>
+          <li>Dedicated Server เครื่องเต็มสำหรับงานที่ต้องการประสิทธิภาพและความเป็นส่วนตัวสูง</li>
+          <li>บริหารจัดการผ่าน Control Panel พร้อม Daily Backup ย้อนหลังสูงสุด 5 วัน</li>
           <li>ใช้ Hardware RAID-5 เพิ่มความเสถียร ป้องกันข้อมูลสูญหาย</li>
+          <li>ควบคุมเครื่องผ่าน Remote Desktop / SSH ปรับแต่ง OS และซอฟต์แวร์ได้อิสระ</li>
+          <li>รองรับหลาย OS: Windows, CentOS, Debian, Fedora, Ubuntu</li>
         </ul>
+        <div class="tier-table-wrap">
+          <table class="tier-table">
+            <thead>
+              <tr><th>Cloud VPS Plan</th><th>Cloud S1</th><th>Cloud S2</th><th>Cloud S3</th><th>Cloud S4</th><th>Cloud S5</th></tr>
+            </thead>
+            <tbody>
+              <tr><th>Core CPU</th><td>1</td><td>2</td><td>4</td><td>4</td><td>6</td></tr>
+              <tr><th>RAM</th><td>2 GB</td><td>4 GB</td><td>8 GB</td><td>12 GB</td><td>16 GB</td></tr>
+              <tr><th>SSD RAID-5</th><td>20 GB</td><td>40 GB</td><td>80 GB</td><td>120 GB</td><td>160 GB</td></tr>
+              <tr><th>Network Port</th><td colspan="5">1 Gbps</td></tr>
+              <tr><th>IP Address</th><td colspan="5">1 IP</td></tr>
+              <tr><th>Data Transfer</th><td colspan="5">ไม่จำกัด</td></tr>
+              <tr><th>Daily Backup</th><td colspan="5">ฟรี · ย้อนหลัง 5 วัน</td></tr>
+              <tr><th>Operating System</th><td colspan="5">Windows / CentOS / Debian / Fedora / Ubuntu</td></tr>
+              <tr><th>VPS Location</th><td colspan="5">The Cloud Data Center By CS Loxinfo</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </article>
 
-    <article class="module">
+    <article class="module" id="vps-business">
       <div class="module-id-col">
         <div class="module-id">RACK · 05</div>
         <div class="led-row"><span class="led"></span><span class="led-text">ACTIVE</span></div>
       </div>
       <div class="module-body">
-        <h3><a href="#contact">Disaster Recovery Site (DR Site)</a></h3>
+        <h3><a href="#contact">Cloud VPS Business</a></h3>
+        <div class="module-tagline">ทรัพยากรเต็มเครื่อง ไม่ต้องแชร์กับใคร สำหรับองค์กรที่ต้องการประสิทธิภาพสูง</div>
+        <p class="module-desc">เซิร์ฟเวอร์เสมือนระดับองค์กร ไม่ต้องลงทุน Hardware เอง ควบคุมได้อิสระเสมือนเป็นเจ้าของเครื่องเอง</p>
+        <ul class="spec-list">
+          <li>ควบคุมผ่าน Remote Desktop, SSH หรือ vSphere Web Client ได้อย่างอิสระ</li>
+          <li>ปรับแต่ง Configuration ของระบบปฏิบัติการและซอฟต์แวร์ได้เต็มที่</li>
+          <li>ใช้ DELL Server และ Samsung SSD คุณภาพสูง พร้อม Hardware RAID-5</li>
+          <li>Backup ข้อมูลอัตโนมัติทุกวัน ย้อนหลังสูงสุดได้ 7 วัน (มากกว่าแพลนทั่วไป)</li>
+          <li>มี Public IP ใช้งานอิสระส่วนตัว พร้อมเจ้าหน้าที่ดูแลตลอด 24/7/365</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="module" id="vps-forex">
+      <div class="module-id-col">
+        <div class="module-id">RACK · 06</div>
+        <div class="led-row"><span class="led"></span><span class="led-text">ACTIVE</span></div>
+      </div>
+      <div class="module-body">
+        <h3><a href="#contact">Cloud VPS Forex</a></h3>
+        <div class="module-tagline">เซิร์ฟเวอร์เฉพาะสาย Trading เปิด EA ได้ต่อเนื่องตลอด 24 ชั่วโมง</div>
+        <p class="module-desc">ออกแบบมาสำหรับนักเทรดโดยเฉพาะ ทรัพยากรไม่ต้องแบ่งใคร เชื่อมต่อตรงไปต่างประเทศ ไม่พลาดทุกคำสั่งเทรด</p>
+        <ul class="spec-list">
+          <li>รองรับ EA / EA Copy Trade / Backtest บน MT4, MT5, cTrader ได้ครบ</li>
+          <li>รันได้ทุกโบรกเกอร์ เช่น XM, FBS, Vantage FX, Pepperstone, Exness, Hotforex</li>
+          <li>ทรัพยากรที่ได้รับจัดสรรใช้งานเต็มประสิทธิภาพ ไม่ต้องแบ่งผู้ใช้รายอื่น</li>
+          <li>ทำงานแทนคอมพิวเตอร์ตลอด 24 ชั่วโมง ไม่มีวันหยุด</li>
+          <li>ควบคุมผ่าน Remote Desktop เสมือนอยู่หน้าจอเครื่องเซิร์ฟเวอร์เอง</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="module" id="dr-site">
+      <div class="module-id-col">
+        <div class="module-id">RACK · 07</div>
+        <div class="led-row"><span class="led"></span><span class="led-text">ACTIVE</span></div>
+      </div>
+      <div class="module-body">
+        <h3><a href="#contact">Disaster Recovery Site &amp; Cloud Backup</a></h3>
         <div class="module-tagline">เตรียมพร้อมก่อนเกิดเหตุ ฉุกเฉินแค่ไหนธุรกิจก็ไม่หยุด</div>
-        <p class="module-desc">แผนสำรองข้อมูลและการฟื้นฟูระบบ ลดความเสียหายเมื่อเกิดเหตุไม่คาดฝัน</p>
+        <p class="module-desc">แผนสำรองข้อมูลและการฟื้นฟูระบบแบบ Disaster Recovery as a Service ลดความเสียหายเมื่อเกิดเหตุไม่คาดฝัน โดยไม่ต้องลงทุน Hardware เอง</p>
         <ul class="spec-list">
           <li>วางระบบสำรองข้อมูลและแผน Business Continuity Plan</li>
-          <li>เชื่อมต่อศูนย์ข้อมูลสำรองมาตรฐานสากล</li>
-          <li>กู้คืนระบบได้รวดเร็ว ลดความเสียหายทางธุรกิจ</li>
+          <li>สำรองและกู้คืนได้ทั้ง Physical Server, Virtual Server, VMware, Hyper-V</li>
+          <li>กู้คืนข้อมูลได้ทั้งระดับ File-based และ Volume-based พร้อม Encryption</li>
+          <li>สลับไปใช้งานระบบบน DR-Site ได้ทันทีเมื่อระบบหลัก Down</li>
+          <li>เชื่อมต่อศูนย์ข้อมูลสำรองมาตรฐาน CS Loxinfo รับประกัน Uptime 99.9%</li>
+        </ul>
+        <div class="tier-table-wrap">
+          <table class="tier-table">
+            <thead>
+              <tr><th>DR-Site Plan</th><th>DR-1</th><th>DR-2</th><th>DR-3</th><th>DR-4</th><th>DR-5</th></tr>
+            </thead>
+            <tbody>
+              <tr><th>Storage</th><td>200 GB</td><td>500 GB</td><td>1 TB</td><td>1.5 TB</td><td>2 TB</td></tr>
+              <tr><th>Bandwidth</th><td colspan="5">1 Gbps</td></tr>
+              <tr><th>Data Transfer</th><td colspan="5">ไม่จำกัด</td></tr>
+              <tr><th>Source Server</th><td>1</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+              <tr><th>Activate Resource (CPU/RAM)</th><td>2C/4GB</td><td>2C/4GB</td><td>4C/8GB</td><td>6C/12GB</td><td>8C/16GB</td></tr>
+              <tr><th>Source OS Support</th><td colspan="5">Windows Server 2008–2019, Windows 7/8/10</td></tr>
+              <tr><th>ค่าติดตั้ง / License</th><td colspan="5">ฟรี</td></tr>
+              <tr><th>DR-Site Location</th><td colspan="5">The Cloud Data Center By CS Loxinfo</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+
+    <article class="module" id="storage">
+      <div class="module-id-col">
+        <div class="module-id">RACK · 08</div>
+        <div class="led-row"><span class="led"></span><span class="led-text">ACTIVE</span></div>
+      </div>
+      <div class="module-body">
+        <h3><a href="#contact">Cloud Storage &amp; File Backup</a></h3>
+        <div class="module-tagline">พื้นที่รับฝากข้อมูลบนคลาวด์ ตั้งอยู่ในประเทศไทย</div>
+        <p class="module-desc">เก็บและแชร์ไฟล์องค์กรได้จากทุกอุปกรณ์ ปลอดภัย เข้าถึงง่าย ไม่ต้องลงทุนอุปกรณ์จัดเก็บข้อมูลเอง</p>
+        <ul class="spec-list">
+          <li>เข้าถึงไฟล์ได้ทุกที่ทุกเวลา ผ่าน Website, Windows, MAC, iOS, Android</li>
+          <li>แชร์ไฟล์ภายในองค์กรหรือส่งลิงก์ให้ผู้อื่นได้ในไม่กี่คลิก (Password Protected Sharing)</li>
+          <li>ค้นหาไฟล์ ดูตัวอย่างไฟล์ และเรียกดูเวอร์ชันย้อนหลังได้ (Version Files)</li>
+          <li>กู้คืนไฟล์ที่ลบไปแล้วได้ (Recovery Deleted Files)</li>
+          <li>จัดเก็บบน Hardware RAID-10 ในประเทศไทย มั่นใจเรื่องความเป็นส่วนตัว</li>
+        </ul>
+        <div class="tier-table-wrap">
+          <table class="tier-table">
+            <thead>
+              <tr><th>Cloud Storage Plan</th><th>CS-100</th><th>CS-500</th><th>CS-1000</th><th>CS-1500</th><th>CS-2000</th></tr>
+            </thead>
+            <tbody>
+              <tr><th>Storage (RAID-10)</th><td>100 GB</td><td>500 GB</td><td>1000 GB</td><td>1500 GB</td><td>2000 GB</td></tr>
+              <tr><th>User Account</th><td colspan="5">ไม่จำกัด</td></tr>
+              <tr><th>Max File Size</th><td colspan="5">ไม่จำกัด</td></tr>
+              <tr><th>Data Transfer</th><td colspan="5">ไม่จำกัด</td></tr>
+              <tr><th>Support Device</th><td colspan="5">Website / Windows / MAC / iOS / Android</td></tr>
+              <tr><th>ค่าติดตั้ง</th><td colspan="5">ฟรี</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+
+    <article class="module">
+      <div class="module-id-col">
+        <div class="module-id">RACK · 09</div>
+        <div class="led-row"><span class="led"></span><span class="led-text">ACTIVE</span></div>
+      </div>
+      <div class="module-body">
+        <h3><a href="#contact">Cloud Web Hosting</a></h3>
+        <div class="module-tagline">โฮสต์เว็บไซต์และอีเมลองค์กร บริหารจัดการเองได้ผ่าน Control Panel</div>
+        <p class="module-desc">บริการ Web Hosting ครบทั้งเว็บไซต์และอีเมล จัดการทุกอย่างได้เองผ่าน Control Panel ชื่อดังระดับโลก</p>
+        <ul class="spec-list">
+          <li>บริหารจัดการผ่าน DirectAdmin Control Panel ใช้งานง่าย</li>
+          <li>ไม่จำกัดจำนวน Sub Domain และฐานข้อมูล MySQL จัดการง่ายด้วย phpMyAdmin</li>
+          <li>จัดการอีเมลได้เอง เพิ่ม/ลบ Account และกำหนดพื้นที่ได้ตามต้องการ</li>
+          <li>ใช้ DELL Server พร้อม Hardware RAID-1 ป้องกันข้อมูลสูญหาย</li>
+          <li>Data Center มาตรฐาน CS Loxinfo รับประกัน Uptime 99.9%</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="module" id="it-solution">
+      <div class="module-id-col">
+        <div class="module-id">RACK · 10</div>
+        <div class="led-row"><span class="led"></span><span class="led-text">ACTIVE</span></div>
+      </div>
+      <div class="module-body">
+        <h3><a href="#contact">System Migration &amp; Virtualization</a></h3>
+        <div class="module-tagline">ย้ายระบบขึ้น Cloud หรือ Private Cloud โดยไม่ให้ธุรกิจสะดุด</div>
+        <p class="module-desc">บริการย้ายระบบจาก Server เครื่องเก่าไปสู่ Cloud หรือ VMware Private Cloud พร้อมวางระบบความปลอดภัยเครือข่ายให้ครบ</p>
+        <ul class="spec-list">
+          <li>ย้ายระบบจาก Server เครื่องเก่าไปไว้บน Cloud หรือ VMware (Private Cloud)</li>
+          <li>ย้ายระบบข้ามผู้ให้บริการ Cloud เดิมไปยัง Cloud ใหม่ได้โดยไม่มีค่าใช้จ่ายเพิ่ม</li>
+          <li>บริการ VMware Resource Pool และ ESXi บริหารจัดการทรัพยากรได้ด้วยตนเองเสมือนเป็นเจ้าของ Private Cloud</li>
+          <li>ติดตั้งระบบ Firewall หรือ Virtual Firewall ตรวจจับผู้บุกรุกและอุดช่องโหว่เครือข่าย</li>
         </ul>
       </div>
     </article>
 
     <article class="module">
       <div class="module-id-col">
-        <div class="module-id">RACK · 06</div>
+        <div class="module-id">RACK · 11</div>
         <div class="led-row"><span class="led"></span><span class="led-text">ACTIVE</span></div>
       </div>
       <div class="module-body">
@@ -673,16 +910,32 @@
     <div class="section-eyebrow">/ About Us</div>
     <p>Ninety-One Consulting ก่อตั้งขึ้นจากความเชื่อว่า “เทคโนโลยีที่ดี” ไม่ใช่แค่การติดตั้งอุปกรณ์ให้ครบ แต่ต้องช่วยให้ธุรกิจเดินหน้าได้อย่างมั่นใจในระยะยาว</p>
     <p>เราให้บริการแบบ One-Stop Service ครอบคลุมตั้งแต่การวางระบบ Server, Network และ Cloud ไปจนถึงแผนสำรองฉุกเฉินและการดูแลหลังการติดตั้ง โดยทีมวิศวกรที่ผ่านงานจริงกับองค์กรหลากหลายขนาด</p>
+    <p>นอกจากงานติดตั้งระบบหน้างาน เรายังให้บริการ Cloud VPS, Dedicated Server, Cloud Storage และ DR-Site บน Data Center มาตรฐาน CS Loxinfo ครบวงจรในทีมเดียวกัน เพื่อให้ลูกค้าไม่ต้องประสานงานหลายเจ้าสำหรับงานไอทีขององค์กร</p>
     <p>เราเชื่อในการทำงานแบบโปร่งใส เสนอราคาชัดเจนตั้งแต่ต้น และอยู่เคียงข้างลูกค้าแม้หลังส่งมอบงานแล้ว เพราะระบบไอทีที่ดีต้องพร้อมใช้งานทุกวัน ไม่ใช่แค่วันที่ติดตั้งเสร็จ</p>
+    <div class="cert-block">
+      <div class="cert-label">Certified Team</div>
+      <div class="cert-badges">
+        <span class="cert-badge">Microsoft MCSA / MCITP / MCP / MCTS</span>
+        <span class="cert-badge">AWS Certified Solutions Architect (SAA)</span>
+        <span class="cert-badge">Cisco CCNA</span>
+        <span class="cert-badge">VMware VCP / VTSP</span>
+        <span class="cert-badge">Palo Alto ACE</span>
+        <span class="cert-badge">Arcserve UDP Technical Associate</span>
+      </div>
+    </div>
   </div>
-  <div class="spec-sheet frame">
-    <div class="spec-sheet-head">Company Spec Sheet</div>
-    <div class="spec-row"><span>ก่อตั้ง</span><span>2013</span></div>
-    <div class="spec-row"><span>ประสบการณ์</span><span>10+ ปี</span></div>
-    <div class="spec-row"><span>บริการหลัก</span><span>6 หมวด</span></div>
-    <div class="spec-row"><span>พื้นที่ให้บริการ</span><span>กรุงเทพฯ + ต่างจังหวัด</span></div>
-    <div class="spec-row"><span>ซัพพอร์ต</span><span>Remote + On-site</span></div>
-    <div class="spec-row"><span>สถานะระบบ</span><span style="color:#4CD787">● Operational</span></div>
+  <div class="about-side">
+    <img class="datacenter-photo frame" src="https://www.moveupcloud.com/wp-content/uploads/2018/05/moveupcloud_datacenter-servers-2.jpg" alt="Data Center Servers" loading="lazy">
+    <div class="spec-sheet frame">
+      <div class="spec-sheet-head">Company Spec Sheet</div>
+      <div class="spec-row"><span>ก่อตั้ง</span><span>2013</span></div>
+      <div class="spec-row"><span>ประสบการณ์รวม</span><span>10+ ปี</span></div>
+      <div class="spec-row"><span>บริการหลัก</span><span>11 หมวด</span></div>
+      <div class="spec-row"><span>Data Center</span><span>CS Loxinfo · Uptime 99.9%</span></div>
+      <div class="spec-row"><span>พื้นที่ให้บริการ</span><span>กรุงเทพฯ + ต่างจังหวัด</span></div>
+      <div class="spec-row"><span>ซัพพอร์ต</span><span>Remote + On-site 24/7</span></div>
+      <div class="spec-row"><span>สถานะระบบ</span><span style="color:#4CD787">● Operational</span></div>
+    </div>
   </div>
 </section>
 
@@ -690,11 +943,34 @@
   <div class="clients-inner">
     <div class="section-head">
       <div>
-        <div class="section-eyebrow">/ Case Studies</div>
-        <h2 class="section-title">ผลงานที่ผ่านมา</h2>
+        <div class="section-eyebrow">/ Trusted By</div>
+        <h2 class="section-title">องค์กรที่เคยไว้วางใจเรา</h2>
       </div>
-      <p class="section-note">ตัวอย่างโจทย์ที่เราเคยดูแล จากหลากหลายประเภทธุรกิจ</p>
+      <p class="section-note">ทีม Ninety-One Consulting เคยออกแบบและติดตั้งระบบ Server, Storage, Network และ Private Cloud ให้กับหน่วยงานภาครัฐและเอกชนหลายแห่ง</p>
     </div>
+    <div class="logo-wall">
+      <img class="logo-item" src="https://www.moveupcloud.com/wp-content/uploads/2018/05/royalthaipolice.png" alt="สำนักงานตำรวจแห่งชาติ" loading="lazy">
+      <img class="logo-item" src="https://www.moveupcloud.com/wp-content/uploads/2018/05/bananastore.png" alt="Banana IT" loading="lazy">
+      <img class="logo-item" src="https://www.moveupcloud.com/wp-content/uploads/2018/05/comseven.png" alt="Comseven" loading="lazy">
+      <img class="logo-item" src="https://www.moveupcloud.com/wp-content/uploads/2018/05/studio7-logo-520x156.png" alt="Studio7" loading="lazy">
+      <img class="logo-item" src="https://www.moveupcloud.com/wp-content/uploads/2018/05/itecsoftware.png" alt="ITEC Software" loading="lazy">
+      <img class="logo-item" src="https://www.moveupcloud.com/wp-content/uploads/2018/05/secret-recipe-logo-vector-720x340.png" alt="Secret Recipe" loading="lazy">
+    </div>
+    <div class="trusted-grid">
+      <div class="trusted-item">การทางพิเศษแห่งประเทศไทย</div>
+      <div class="trusted-item">กสทช.</div>
+      <div class="trusted-item">สำนักงานเลขาธิการสภาผู้แทนราษฎร</div>
+      <div class="trusted-item">สำนักงานปลัดกระทรวงคมนาคม</div>
+      <div class="trusted-item">กรมทางหลวง</div>
+      <div class="trusted-item">บมจ. กสท โทรคมนาคม (CAT)</div>
+      <div class="trusted-item">บมจ. ทีโอที (TOT)</div>
+      <div class="trusted-item">สำนักงานตำรวจแห่งชาติ</div>
+      <div class="trusted-item">กองบังคับการตำรวจจราจร</div>
+      <div class="trusted-item">การไฟฟ้าส่วนภูมิภาค</div>
+      <div class="trusted-item">การประปาส่วนภูมิภาค</div>
+      <div class="trusted-item">ทางหลวงพิเศษหมายเลข 7</div>
+    </div>
+
     <div class="case-grid">
       <div class="case-card">
         <span class="case-tag">Manufacturing</span>
@@ -715,7 +991,7 @@
         <div class="case-metric"><b>0</b><span>ชั่วโมงระบบล่มระหว่างเวลาทำการ</span></div>
       </div>
     </div>
-    <div class="case-note">* ตัวอย่างเนื้อหาโครงร่างงาน สามารถแทนที่ด้วยผลงานและชื่อลูกค้าจริงของบริษัทได้</div>
+    <div class="case-note">* รายชื่อองค์กรด้านบนเป็นข้อมูลลูกค้าจริงจากผลงานที่ผ่านมา ส่วนการ์ดผลงานด้านล่างเป็นตัวอย่างโครงร่างงาน แนะนำให้แทนที่ด้วยรายละเอียดโครงการจริงเมื่อมีข้อมูล</div>
   </div>
 </section>
 
@@ -738,10 +1014,10 @@
     </div>
     <div class="testi-card">
       <div class="testi-mark">“</div>
-      <p class="testi-quote">ราคาที่เสนอชัดเจนตั้งแต่แรก ไม่มีค่าใช้จ่ายแอบแฝง ระบบ Cloud ที่วางให้ก็เสถียรมากตลอดปีที่ใช้งาน</p>
+      <p class="testi-quote">เคยใช้ VPS ต่างประเทศแล้วโดนคิดค่า Traffic จากการโจมตีของแฮกเกอร์ไปด้วย พอย้ายมาใช้ SSD VPS ของทีมนี้ ประสิทธิภาพเกินคาด เว็บโหลดไวขึ้นชัดเจน อันดับ Google ก็ดีขึ้นตามไปด้วย ติดต่อทีมงานผ่าน Line ได้ทันทีเวลามีปัญหา</p>
       <div class="testi-who">
-        <div class="testi-avatar">OP</div>
-        <div><b>เจ้าของกิจการ</b><span>ธุรกิจค้าปลีก</span></div>
+        <img class="testi-avatar testi-avatar-img" src="https://www.moveupcloud.com/wp-content/uploads/2018/05/kachar.jpeg" alt="คชา กันยาหลง">
+        <div><b>คชา กันยาหลง</b><span>Founder — Jupiter Software Limited</span></div>
       </div>
     </div>
     <div class="testi-card">
@@ -764,6 +1040,10 @@
       </div>
     </div>
     <div class="faq-list">
+      <details class="faq-item">
+        <summary>ข้อมูลบน Cloud Storage และ Server ปลอดภัยแค่ไหน?</summary>
+        <p>ระบบทั้งหมดตั้งอยู่บน Data Center มาตรฐาน CS Loxinfo รับประกัน Uptime 99.9% ป้องกันข้อมูลสูญหายด้วย Hardware RAID และมีระบบ Backup อัตโนมัติทุกวัน พร้อมทีมงานดูแลระบบตลอด 24 ชั่วโมง</p>
+      </details>
       <details class="faq-item" open>
         <summary>ให้บริการนอกพื้นที่กรุงเทพฯ ด้วยหรือไม่?</summary>
         <p>ให้บริการทั้งในเขตกรุงเทพฯ และต่างจังหวัด งานติดตั้งหน้างานและ On-site Support ครอบคลุมทั่วประเทศ ขึ้นอยู่กับขอบเขตของแต่ละโปรเจกต์</p>
@@ -794,19 +1074,23 @@
     <h2>พร้อมคุยเรื่องระบบไอทีของคุณหรือยัง?</h2>
     <p>ทีมวิศวกรของเราพร้อมประเมินหน้างานและเสนอแนวทางที่เหมาะกับธุรกิจคุณ ไม่มีค่าใช้จ่ายในการให้คำปรึกษาเบื้องต้น</p>
     <div class="contact-detail">
-      <div class="contact-detail-label">EMAIL</div>
-      <div class="contact-detail-val">sale@91-consulting.com</div>
+      <div class="contact-detail-label">ฝ่ายขาย</div>
+      <div class="contact-detail-val">sale@91-consulting.com<br>089-365-8299</div>
     </div>
     <div class="contact-detail">
-      <div class="contact-detail-label">PHONE</div>
-      <div class="contact-detail-val">063-343-9100</div>
+      <div class="contact-detail-label">ฝ่ายเทคนิค</div>
+      <div class="contact-detail-val">support@91-consulting.com<br>089-365-8299</div>
+    </div>
+    <div class="contact-detail">
+      <div class="contact-detail-label">สำนักงาน</div>
+      <div class="contact-detail-val">02-XXX-XXXX</div>
     </div>
     <div class="contact-detail">
       <div class="contact-detail-label">พื้นที่บริการ</div>
       <div class="contact-detail-val">กรุงเทพฯ และต่างจังหวัด</div>
     </div>
   </div>
-  <form class="contact-form frame" action="mailto:contact@91-consulting.com" method="post" enctype="text/plain">
+  <form class="contact-form frame" action="mailto:sale@91-consulting.com" method="post" enctype="text/plain">
     <div class="form-row">
       <div class="form-field">
         <label for="f-name">ชื่อ-นามสกุล</label>
@@ -834,8 +1118,13 @@
           <option>End-to-End IT Infrastructure Solutions</option>
           <option>IT Equipment Sales &amp; Rental</option>
           <option>IT Managed Services &amp; Consulting</option>
-          <option>Cloud VPS &amp; Dedicated Server</option>
+          <option>Cloud VPS SSD &amp; Dedicated Server</option>
+          <option>Cloud VPS Business</option>
+          <option>Cloud VPS Forex</option>
           <option>Disaster Recovery Site (DR Site)</option>
+          <option>Cloud Storage &amp; File Backup</option>
+          <option>Cloud Web Hosting</option>
+          <option>System Migration &amp; Virtualization</option>
           <option>Office IT Relocation Services</option>
           <option>อื่น ๆ / ยังไม่แน่ใจ</option>
         </select>
@@ -861,8 +1150,10 @@
       </div>
       <nav class="footer-nav">
         <a href="#home">Home</a>
-        <a href="#services">ICT Solution</a>
-        <a href="#cloud">Cloud Service</a>
+        <a href="#cloud">Cloud VPS</a>
+        <a href="#storage">Storage</a>
+        <a href="#dr-site">DR-Site</a>
+        <a href="#it-solution">IT Solution</a>
         <a href="#about">About Us</a>
         <a href="#clients">Case Studies</a>
         <a href="#faq">FAQ</a>
