@@ -376,6 +376,43 @@ h2.section-title{font-family:'Chakra Petch',sans-serif;font-weight:600;font-size
 
 /* ---------- FOOTER ---------- */
 footer{background:var(--panel);border-top:1px solid var(--line);padding:44px 28px 26px;}
+
+/* ---------- DARK GRADIENT THEME (Footer, site-wide) ---------- */
+footer.footer-dark{
+  position:relative;
+  background:linear-gradient(160deg, #26221D, #332B22);
+  border-top:1px solid rgba(243,167,82,.18);
+  overflow:hidden;
+  color:var(--text);
+  --panel:#2E271F;
+  --panel-2:#453A2E;
+  --panel-3:#4F4234;
+  --cyan:#F3A752;
+  --cyan-dim:#D8CFC1;
+  --text:#F4EEE4;
+  --muted:#9C9384;
+  --muted-2:#D8CFC1;
+  --line:rgba(243,167,82,.18);
+  --line-2:rgba(243,167,82,.35);
+}
+footer.footer-dark::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(circle at top right, rgba(232,130,31,.35), transparent 55%);
+}
+footer.footer-dark .footer-motif{
+  position:absolute;top:-90px;right:-40px;width:280px;height:280px;
+  border-radius:50%;pointer-events:none;z-index:0;
+  border:1px solid rgba(243,167,82,.38);
+}
+footer.footer-dark .footer-motif::before{
+  content:"";position:absolute;inset:32px;border-radius:50%;
+  border:1px solid rgba(243,167,82,.5);
+}
+footer.footer-dark .footer-motif::after{
+  content:"";position:absolute;inset:64px;border-radius:50%;
+  border:1px solid rgba(243,167,82,.65);
+}
+footer.footer-dark .footer-inner{position:relative;z-index:1;}
 .footer-inner{max-width:1280px;margin:0 auto;}
 .footer-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:28px;padding-bottom:28px;border-bottom:1px solid var(--line);margin-bottom:20px;}
 .footer-nav{display:flex;gap:20px;flex-wrap:wrap;}
@@ -515,7 +552,8 @@ footer{background:var(--panel);border-top:1px solid var(--line);padding:44px 28p
     </div>
   </div>
 </section>
-<footer>
+<footer class="footer-dark">
+  <div class="footer-motif"></div>
   <div class="footer-inner">
     <div class="footer-top">
       <div class="brand">
