@@ -202,6 +202,8 @@ h2.section-title{font-family:'Chakra Petch',sans-serif;font-weight:600;font-size
 .field input:focus,.field select:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(232,120,21,.12);}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .seg{display:flex;border:1px solid var(--line-2);border-radius:var(--radius);overflow:hidden;}
+.seg.seg-wrap{flex-wrap:wrap;border-radius:0;overflow:visible;gap:1px;background:var(--line-2);border:1px solid var(--line-2);}
+.seg.seg-wrap button{flex:1 1 auto;background:var(--panel-2);}
 .seg button{
   flex:1;background:var(--void);color:var(--muted);border:none;padding:10px 8px;
   font-family:'JetBrains Mono',monospace;font-size:14px;cursor:pointer;transition:background .2s,color .2s;
@@ -905,6 +907,187 @@ function calcBandwidth(){
   document.getElementById('bwOutTime').textContent = formatTime(seconds);
 }
 calcBandwidth();
+}
+// ---- RAID Storage Calculator ----
+if (document.getElementById('raidDiskCount')) {
+let raidType = '0';
+setupSeg('raidTypeSeg', (v) => { raidType = v; calcRaid(); });
+['raidDiskCount','raidDiskSize'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcRaid);
+});
+function calcRaid(){
+  const n = Math.max(2, parseInt(document.getElementById('raidDiskCount').value) || 2);
+  const s = Math.max(0, parseFloat(document.getElementById('raidDiskSize').value) || 0);
+  const totalRaw = n * s;
+  let usable = 0, tolerance = 0, label = '';
+
+  if (raidType === '0') {
+    usable = n * s; tolerance = 0;
+    label = 'ไม่มี Redundancy — ดิสก์เสีย 1 ลูก ข้อมูลหายทั้งชุด';
+  } else if (raidType === '1') {
+    const pairs = Math.floor(n / 2);
+    usable = pairs * s; tolerance = pairs;
+    label = 'ข้อมูล Mirror กัน — เสียได้สูงสุด 1 ลูกต่อคู่ Mirror';
+  } else if (raidType === '5') {
+    usable = Math.max(0, n - 1) * s; tolerance = 1;
+    label = 'ใช้ Parity 1 ชุด — เสียได้ 1 ลูกโดยข้อมูลไม่หาย (ขั้นต่ำ 3 ลูก)';
+  } else if (raidType === '6') {
+    usable = Math.max(0, n - 2) * s; tolerance = 2;
+    label = 'ใช้ Parity 2 ชุด — เสียได้พร้อมกัน 2 ลูกโดยข้อมูลไม่หาย (ขั้นต่ำ 4 ลูก)';
+  } else if (raidType === '10') {
+    const pairs = Math.floor(n / 2);
+    usable = pairs * s; tolerance = pairs;
+    label = 'Stripe + Mirror — เสียได้สูงสุด 1 ลูกต่อคู่ Mirror (ขั้นต่ำ 4 ลูก)';
+  }
+
+  const overhead = totalRaw - usable;
+  const overheadPct = totalRaw > 0 ? (overhead / totalRaw * 100) : 0;
+
+  document.getElementById('raidOutUsable').innerHTML = usable.toFixed(1) + '<span>TB</span>';
+  document.getElementById('raidOutUsableDetail').textContent = 'จากพื้นที่รวม ' + totalRaw.toFixed(1) + 'TB';
+  document.getElementById('raidOutOverhead').innerHTML = overhead.toFixed(1) + '<span>TB</span>';
+  document.getElementById('raidOutOverheadDetail').textContent = 'คิดเป็น ' + overheadPct.toFixed(0) + '% ของพื้นที่รวม';
+  document.getElementById('raidOutTolerance').innerHTML = tolerance + '<span>ลูก</span>';
+  document.getElementById('raidOutToleranceDetail').textContent = label;
+}
+calcRaid();
+}
+
+// ---- Uptime / SLA Downtime Calculator ----
+if (document.getElementById('uptimeCustom')) {
+function formatDowntime(totalSeconds){
+  totalSeconds = Math.max(0, Math.round(totalSeconds));
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = Math.floor(totalSeconds % 60);
+  if (h > 0) return h + ' ชม. ' + m + ' นาที';
+  if (m > 0) return m + ' นาที ' + s + ' วิ';
+  return s + ' วินาที';
+}
+function calcUptime(){
+  const pct = Math.min(100, Math.max(0, parseFloat(document.getElementById('uptimeCustom').value) || 0));
+  const downFraction = (100 - pct) / 100;
+  const secondsPerYear = 365.25 * 24 * 3600;
+  const downYear = downFraction * secondsPerYear;
+  const downMonth = downYear / 12;
+  const downDay = downFraction * 24 * 3600;
+
+  document.getElementById('uptimeOutYear').textContent = formatDowntime(downYear);
+  document.getElementById('uptimeOutMonth').textContent = formatDowntime(downMonth);
+  document.getElementById('uptimeOutDay').textContent = formatDowntime(downDay);
+}
+document.getElementById('uptimeCustom').addEventListener('input', () => {
+  document.querySelectorAll('#uptimePresetSeg button').forEach(b => b.classList.remove('active'));
+  calcUptime();
+});
+setupSeg('uptimePresetSeg', (v) => {
+  document.getElementById('uptimeCustom').value = v;
+  calcUptime();
+});
+calcUptime();
+}
+
+// ---- DR-Site RTO/RPO Estimator ----
+if (document.getElementById('drDataSize')) {
+const drPlans = [
+  { id: 'DR-1', storage: 200,  servers: 1 },
+  { id: 'DR-2', storage: 500,  servers: 1 },
+  { id: 'DR-3', storage: 1024, servers: 2 },
+  { id: 'DR-4', storage: 1536, servers: 3 },
+  { id: 'DR-5', storage: 2048, servers: 4 },
+];
+['drDataSize','drServerCount','drRto','drRpo'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcDr);
+});
+function calcDr(){
+  const dataSize = Math.max(0, parseFloat(document.getElementById('drDataSize').value) || 0);
+  const serverCount = Math.max(1, parseInt(document.getElementById('drServerCount').value) || 1);
+  const rto = Math.max(0, parseFloat(document.getElementById('drRto').value) || 0);
+  const rpo = Math.max(0, parseFloat(document.getElementById('drRpo').value) || 0);
+
+  let plan = drPlans.find(p => p.storage >= dataSize && p.servers >= serverCount);
+  if (!plan) plan = drPlans[drPlans.length - 1];
+
+  document.getElementById('drOutPlan').innerHTML = plan.id + '<span></span>';
+  document.getElementById('drOutPlanDetail').textContent =
+    'Storage ' + (plan.storage >= 1024 ? (plan.storage/1024) + 'TB' : plan.storage + 'GB') +
+    ' · รองรับ ' + plan.servers + ' Source Server' + (plan.servers > 1 ? '' : '');
+
+  const warnEl = document.getElementById('drOutWarning');
+  if (!plan || plan.storage < dataSize || plan.servers < serverCount) {
+    warnEl.textContent = '⚠ ความต้องการเกินแผนสูงสุดที่มี ทีมงานสามารถออกแบบแผนกำหนดเองให้ได้';
+  } else if (rto < 1 || rpo < 1) {
+    warnEl.textContent = '⚠ RTO/RPO ต่ำกว่า 1 ชั่วโมง — ควรพิจารณา Real-time Replication เพิ่มเติมนอกเหนือจากแผนพื้นฐาน';
+  } else {
+    warnEl.textContent = '';
+  }
+}
+calcDr();
+}
+
+// ---- VPS Sizing Calculator ----
+if (document.getElementById('vpsUsers')) {
+const vpsPlans = [
+  { id: 'S1', cpu: 1, ram: '2GB',  ssd: '20GB' },
+  { id: 'S2', cpu: 2, ram: '4GB',  ssd: '40GB' },
+  { id: 'S3', cpu: 4, ram: '8GB',  ssd: '80GB' },
+  { id: 'S4', cpu: 4, ram: '12GB', ssd: '120GB' },
+  { id: 'S5', cpu: 6, ram: '16GB', ssd: '160GB' },
+];
+let vpsType = 'small';
+setupSeg('vpsTypeSeg', (v) => { vpsType = v; calcVps(); });
+document.getElementById('vpsUsers').addEventListener('input', calcVps);
+function calcVps(){
+  const users = Math.max(1, parseInt(document.getElementById('vpsUsers').value) || 1);
+  let tierIndex;
+  if (users < 50) tierIndex = 0;
+  else if (users < 150) tierIndex = 1;
+  else if (users < 400) tierIndex = 2;
+  else if (users < 800) tierIndex = 3;
+  else tierIndex = 4;
+
+  if (vpsType === 'heavy') tierIndex = Math.min(4, tierIndex + 1);
+
+  const plan = vpsPlans[tierIndex];
+  document.getElementById('vpsOutPlan').innerHTML = plan.id + '<span></span>';
+  document.getElementById('vpsOutPlanDetail').textContent =
+    plan.cpu + ' Core · ' + plan.ram + ' RAM · ' + plan.ssd + ' SSD';
+}
+calcVps();
+}
+
+// ---- TCO: On-Premise vs Cloud ----
+if (document.getElementById('tcoServerCost')) {
+['tcoServerCost','tcoOpex','tcoCloudMonthly','tcoYears'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcTco);
+});
+function calcTco(){
+  const serverCost = Math.max(0, parseFloat(document.getElementById('tcoServerCost').value) || 0);
+  const opex = Math.max(0, parseFloat(document.getElementById('tcoOpex').value) || 0);
+  const cloudMonthly = Math.max(0, parseFloat(document.getElementById('tcoCloudMonthly').value) || 0);
+  const years = Math.max(1, parseFloat(document.getElementById('tcoYears').value) || 1);
+
+  const totalOnPrem = serverCost + (opex * 12 * years);
+  const totalCloud = cloudMonthly * 12 * years;
+  const diff = Math.abs(totalOnPrem - totalCloud);
+
+  document.getElementById('tcoOutOnPrem').innerHTML = Math.round(totalOnPrem).toLocaleString('en-US') + '<span>บาท</span>';
+  document.getElementById('tcoOutCloud').innerHTML = Math.round(totalCloud).toLocaleString('en-US') + '<span>บาท</span>';
+
+  const resultEl = document.getElementById('tcoOutResult');
+  const detailEl = document.getElementById('tcoOutResultDetail');
+  if (totalCloud < totalOnPrem) {
+    resultEl.textContent = 'Cloud คุ้มกว่า';
+    detailEl.textContent = 'ประหยัดกว่า ' + Math.round(diff).toLocaleString('en-US') + ' บาท ในช่วง ' + years + ' ปี';
+  } else if (totalOnPrem < totalCloud) {
+    resultEl.textContent = 'On-Premise คุ้มกว่า';
+    detailEl.textContent = 'ประหยัดกว่า ' + Math.round(diff).toLocaleString('en-US') + ' บาท ในช่วง ' + years + ' ปี';
+  } else {
+    resultEl.textContent = 'ต้นทุนใกล้เคียงกัน';
+    detailEl.textContent = 'ควรพิจารณาปัจจัยอื่น เช่น ความยืดหยุ่น และภาระงานดูแลระบบ';
+  }
+}
+calcTco();
 }
 
 </script>
